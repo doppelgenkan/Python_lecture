@@ -183,6 +183,10 @@ class Elbow:
 
 
     def allowed_angles(self):
+        '''
+        Return 1-dim NDarray.
+        与えられた肩屈曲角に対して，可能な(1[degree]刻みの)肘関節屈曲角のNDarrayを返す.
+        '''
         beta = self.parameters[5]
         if beta < 45:
             angles = np.arange(10, 136, 1)
