@@ -218,32 +218,32 @@ def do_calc():
 
 
 def draw_effects():
-    body_mass = float(input('体質量(kg)を入力してください: '))
-    forearm_length = float(input('前腕長(m)を入力してください : '))
-    w = float(input('錘質量(kg)を入力してください: '))
-    beta = float(input('肩屈曲角(degrees)を入力してください: '))
+    body_mass = float(input('体質量[kg]を入力してください: '))
+    forearm_length = float(input('前腕長[m]を入力してください : '))
+    w = float(input('錘質量[kg]を入力してください: '))
+    beta = float(input('肩屈曲角[degrees]を入力してください: '))
     obj = Elbow(body_mass, forearm_length)
     obj.set_beta(beta)
     obj.set_load(w)
     angles = obj.allowed_angles()
-    '''
-    if beta < 45:
-        angles = np.arange(10, 136, 1)
-    else:
-        angles = np.arange(10, 180-beta, 1)
-    '''
     #肘関節モーメントのグラフ
     plt.figure()
-    plt.plot(angles, obj.torque(angles))
+    plt.plot(angles, obj.torque(load, beta, angles))
     plt.xlabel('Flection angles of elbow [degrees]')
     plt.ylabel('Moment of force around elbow [Nm]')
     #前腕筋力のグラフ
     plt.figure()
-    plt.plot(angles, obj.force_mag(angles))
+    plt.plot(angles, obj.force_mag(w, beta, angles), label = 'magnitude')
+    plt.plot(angles, obj.force_x(w, beta, angles), label = 'x-component')
+    plt.plot(angles, obj.force_y(w, beta, angles), label = 'y-component')
+    plt.legend()
     plt.xlabel('Flection angles of elbow [degrees]')
     plt.ylabel('Force of forearm mascle [N]')
     #肘関節筋力のグラフ
     plt.figure()
-    plt.plot(angles, obj.resiatance_mag(angles))
+    plt.plot(angles, obj.resistance_mag(w, beta, angles), label = 'magnitude')
+    plt.plot(angles, obj.resistance_x(w, beta, angles), label = 'x-component')
+    plt.plot(angles, obj.resistance_y(w, beta, angles), label = 'y-component')
+    plt.legend()
     plt.xlabel('Flection angles of elbow [degrees]')
     plt.ylabel('Resistance of elbow [N]')
