@@ -39,7 +39,7 @@ class Elbow:
         print(f'負荷　　: {self.parameters[6]}[kg]')
 
 
-    def set_shoulder_flection_angle(self, new_angle): #肩屈曲角の変更
+    def set_beta(self, new_angle): #肩屈曲角の変更
         '''
         Return None.
         肩屈曲角の変更. デフォルトは0[degrees].
@@ -197,24 +197,24 @@ class Elbow:
 
 
 def do_calc():
-    body_mass = float(input('体質量(kg)を入力してください: '))
-    forearm_length = float(input('前腕長(m)を入力してください : '))
-    w = float(input('錘質量(kg)を入力してください: '))
-    beta= float(input('肩屈曲角(degrees)を入力してください: '))
-    theta = float(input('肘屈曲角(degrees)を入力してください: '))
+    body_mass = float(input('体質量[kg]を入力してください: '))
+    forearm_length = float(input('前腕長[m]を入力してください : '))
+    w = float(input('錘質量[kg]を入力してください: '))
+    beta= float(input('肩屈曲角[degrees]を入力してください: '))
+    theta = float(input('肘屈曲角[degrees]を入力してください: '))
     if beta < 0 or theta < 10 or (beta + theta) >= 180:
         print('計算ストップ：不正な角です.')
     else:
         obj = Elbow(body_mass, forearm_length)
-        obj.set_shoulder_flection_angle(beta)
+        obj.set_beta(beta)
         obj.set_load(w)
         print('------------------')
         print('【計算結果】')
-        print('肘関節モーメントの大きさ(Nm): %s' % obj.torque(theta))
-        print('上腕筋の力の大きさ(N)      : %s' % obj.force_mag(theta))
-        print('肘関節抗力の大きさ(N)      : %s' % obj.resiatance_mag(theta))
-        print('上腕筋の力のベクトル(N)     : %s' % array([obj.force_x(theta), obj.force_y(theta)]))
-        print('肘関節抗力のベクトル(N)     : %s' % array([obj.resiatance_x(theta), obj.resiatance_y(theta)]))
+        print(f'肘関節トルクの回転軸成分[Nm]: {obj.torque(theta)}')
+        print(f'上腕筋の力の大きさ[N]: {obj.force_mag(theta)}')
+        print(f'肘関節抗力の大きさ[N]: {obj.resiatance_mag(theta)}')
+        print(f'上腕筋の力のベクトル[N]]: {obj.force_vector(theta)}')
+        print(f'肘関節抗力のベクトル[N]: {obj.resiatance_vector(theta)}')
 
 
 def draw_effects():
@@ -223,7 +223,7 @@ def draw_effects():
     w = float(input('錘質量(kg)を入力してください: '))
     beta = float(input('肩屈曲角(degrees)を入力してください: '))
     obj = Elbow(body_mass, forearm_length)
-    obj.set_shoulder_flection_angle(beta)
+    obj.set_beta(beta)
     obj.set_load(w)
     angles = obj.allowed_angles()
     '''
